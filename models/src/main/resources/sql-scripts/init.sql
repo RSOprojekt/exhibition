@@ -1,0 +1,1 @@
+INSERT INTO exhibition_metadata (title, description, startTime, endTime, images) VALUES ('Our fist exhibition', 'This is the first exhibition that we created for the RSO course.', TIMESTAMP '2020-01-01 15:36:38', TIMESTAMP '2020-01-03 15:36:38', 5);
