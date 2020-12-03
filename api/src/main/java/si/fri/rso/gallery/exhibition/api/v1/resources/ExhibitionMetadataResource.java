@@ -50,7 +50,7 @@ public class ExhibitionMetadataResource {
 
         JSONArray mikrostoritve = new JSONArray();
         mikrostoritve.put("http://20.62.152.21:8080/v1/exhibitions");
-        mikrostoritve.put("TODO");
+        mikrostoritve.put("http://40.88.193.138:8080/v1/gallery");
         rezultat.put("mikrostoritve", mikrostoritve);
 
         JSONArray github = new JSONArray();
