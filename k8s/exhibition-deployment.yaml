@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         # Izbrati moras zadnji tag
-        - image: rsogalerija/exhibition:1.0.0-SNAPSHOT-4.1
+        - image: rsogalerija/exhibition:1.0.0-SNAPSHOT-5.1
           name: exhibition
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
