@@ -12,4 +12,3 @@ kumuluzee:
       connection-url: jdbc:postgresql://192.168.99.100:5432/exhibition-metadata
       username: dbuser
       password: postgres
-      max-pool-size: 20

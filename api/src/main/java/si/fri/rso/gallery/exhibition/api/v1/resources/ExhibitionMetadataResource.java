@@ -17,6 +17,8 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import si.fri.rso.gallery.exhibition.lib.ExhibitionMetadata;
 import si.fri.rso.gallery.exhibition.services.beans.ExhibitionMetadataBean;
 
@@ -33,6 +35,41 @@ public class ExhibitionMetadataResource {
 
     @Context
     protected UriInfo uriInfo;
+
+    @GET
+    @Path("/info")
+    public Response getInfo() {
+        JSONObject rezultat = new JSONObject();
+
+        JSONArray clani = new JSONArray();
+        clani.put("an2006");
+        clani.put("gd4667");
+        rezultat.put("clani", clani);
+
+        rezultat.put("opis_projekta", "Nas projekt implementira digitalno galerijo, aplikacijo za ogled slik na spletu.");
+
+        JSONArray mikrostoritve = new JSONArray();
+        mikrostoritve.put("TO DO");
+        mikrostoritve.put("TO DO");
+        rezultat.put("mikrostoritve", mikrostoritve);
+
+        JSONArray github = new JSONArray();
+        github.put("https://github.com/RSOprojekt/exhibition");
+        github.put("https://github.com/RSOprojekt/imageHandling");
+        rezultat.put("github", github);
+
+        JSONArray travis = new JSONArray();
+        travis.put("https://travis-ci.com/github/RSOprojekt/exhibition");
+        travis.put("https://travis-ci.com/github/RSOprojekt/imageHandling");
+        rezultat.put("travis", travis);
+
+        JSONArray dockerhub = new JSONArray();
+        dockerhub.put("https://hub.docker.com/r/rsogalerija/exhibition");
+        dockerhub.put("https://hub.docker.com/r/rsogalerija/imagehandling");
+        rezultat.put("dockerhub", dockerhub);
+
+        return  Response.status(Response.Status.OK).entity(rezultat.toString()).build();
+    }
 
     @GET
     public Response getExhibitionMetadata() {
