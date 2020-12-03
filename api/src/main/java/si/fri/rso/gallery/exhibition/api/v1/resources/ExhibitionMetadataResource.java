@@ -49,7 +49,7 @@ public class ExhibitionMetadataResource {
         rezultat.put("opis_projekta", "Nas projekt implementira digitalno galerijo, aplikacijo za ogled slik na spletu.");
 
         JSONArray mikrostoritve = new JSONArray();
-        mikrostoritve.put("TO DO");
+        mikrostoritve.put("http://20.62.152.21:8080/v1/exhibitions");
         mikrostoritve.put("TO DO");
         rezultat.put("mikrostoritve", mikrostoritve);
 
