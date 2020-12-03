@@ -65,7 +65,7 @@ public class ExhibitionMetadataResource {
             exhibitionMetadata = exhibitionMetadataBean.createExhibitionMetadata(exhibitionMetadata);
         }
 
-        return Response.status(Response.Status.CONFLICT).entity(exhibitionMetadata).build();
+        return Response.status(Response.Status.OK).entity(exhibitionMetadata).build();
 
     }
 
