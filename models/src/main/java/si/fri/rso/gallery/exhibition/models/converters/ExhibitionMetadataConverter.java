@@ -14,6 +14,7 @@ public class ExhibitionMetadataConverter {
         dto.setStartTime(entity.getStartTime());
         dto.setEndTime(entity.getEndTime());
         dto.setImages(entity.getImages());
+        dto.setPriceInEuro(entity.getPriceInEuro());
 
         return dto;
 
@@ -27,6 +28,7 @@ public class ExhibitionMetadataConverter {
         entity.setStartTime(dto.getStartTime());
         entity.setEndTime(dto.getEndTime());
         entity.setImages(dto.getImages());
+        entity.setPriceInEuro(dto.getPriceInEuro());
 
         return entity;
 

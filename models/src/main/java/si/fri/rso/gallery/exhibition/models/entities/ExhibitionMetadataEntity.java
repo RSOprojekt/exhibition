@@ -2,6 +2,8 @@ package si.fri.rso.gallery.exhibition.models.entities;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "exhibition_metadata")
@@ -28,8 +30,13 @@ public class ExhibitionMetadataEntity {
     @Column(name = "endTime")
     private Instant endTime;
 
+    @Lob
     @Column(name = "images")
-    private Integer images;
+    private ArrayList<Integer> images;
+
+    @Column(name = "priceInEuro")
+    private Double priceInEuro;
+
 
 
     public Integer getId() {
@@ -72,11 +79,19 @@ public class ExhibitionMetadataEntity {
         this.endTime = endTime;
     }
 
-    public Integer getImages() {
+    public ArrayList<Integer> getImages() {
         return images;
     }
 
-    public void setImages(Integer images) {
+    public void setImages(ArrayList<Integer> images) {
         this.images = images;
+    }
+
+    public Double getPriceInEuro() {
+        return priceInEuro;
+    }
+
+    public void setPriceInEuro(Double priceInEuro) {
+        this.priceInEuro = priceInEuro;
     }
 }

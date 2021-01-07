@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: proxy-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /exhibition(/|$)(.*) # /exhibition/v1/exhibitions ...
+            backend:
+              serviceName: exhibition
+              servicePort: 8080
+#          - path: /emotion(/|$)(.*)
+#            backend:
+#              serviceName: emotion
+#              servicePort: 8080

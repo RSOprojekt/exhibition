@@ -1,6 +1,8 @@
 package si.fri.rso.gallery.exhibition.lib;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExhibitionMetadata {
 
@@ -9,7 +11,9 @@ public class ExhibitionMetadata {
     private String description;
     private Instant startTime;
     private Instant endTime;
-    private Integer images;
+    private ArrayList<Integer> images;
+    private Double priceInEuro;
+    private Double priceInUsd;
 
 
     public Integer getExhibitionId() {
@@ -52,11 +56,27 @@ public class ExhibitionMetadata {
         this.endTime = endTime;
     }
 
-    public Integer getImages() {
+    public ArrayList<Integer> getImages() {
         return images;
     }
 
-    public void setImages(Integer images) {
+    public void setImages(ArrayList<Integer> images) {
         this.images = images;
+    }
+
+    public Double getPriceInEuro() {
+        return priceInEuro;
+    }
+
+    public void setPriceInEuro(Double priceInEuro) {
+        this.priceInEuro = priceInEuro;
+    }
+
+    public Double getPriceInUsd() {
+        return priceInUsd;
+    }
+
+    public void setPriceInUsd(Double priceInUsd) {
+        this.priceInUsd = priceInUsd;
     }
 }

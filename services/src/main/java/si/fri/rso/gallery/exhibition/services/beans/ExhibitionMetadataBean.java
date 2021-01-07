@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import si.fri.rso.gallery.exhibition.lib.ExhibitionMetadata;
 import si.fri.rso.gallery.exhibition.models.converters.ExhibitionMetadataConverter;
 import si.fri.rso.gallery.exhibition.models.entities.ExhibitionMetadataEntity;
@@ -26,6 +27,7 @@ public class ExhibitionMetadataBean {
     @Inject
     private EntityManager em;
 
+    @Timed
     public List<ExhibitionMetadata> getExhibitionMetadata() {
 
         TypedQuery<ExhibitionMetadataEntity> query = em.createNamedQuery(
@@ -47,7 +49,7 @@ public class ExhibitionMetadataBean {
     }
 
     public ExhibitionMetadata getExhibitionMetadata(Integer id) {
-
+        log.info("To bi moglo iti");
         ExhibitionMetadataEntity exhibitionMetadataEntity = em.find(ExhibitionMetadataEntity.class, id);
 
         if (exhibitionMetadataEntity == null) {

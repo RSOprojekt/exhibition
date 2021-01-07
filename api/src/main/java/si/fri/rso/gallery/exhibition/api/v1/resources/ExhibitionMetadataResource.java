@@ -14,14 +14,19 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.kumuluz.ee.logs.cdi.Log;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.DefaultAsyncHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import si.fri.rso.gallery.exhibition.lib.ExhibitionMetadata;
 import si.fri.rso.gallery.exhibition.services.beans.ExhibitionMetadataBean;
 
+@Log
 @ApplicationScoped
 @Path("/exhibitions")
 @Produces(MediaType.APPLICATION_JSON)
@@ -39,6 +44,8 @@ public class ExhibitionMetadataResource {
     @GET
     @Path("/info")
     public Response getInfo() {
+
+        log.info("Called /info endpoint.");
         JSONObject rezultat = new JSONObject();
 
         JSONArray clani = new JSONArray();
@@ -88,6 +95,36 @@ public class ExhibitionMetadataResource {
         if (exhibitionMetadata == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
+        String price = exhibitionMetadata.getPriceInEuro().toString();
+        String currencyFrom = "EUR";
+        String currencyTo = "USD";
+
+        AsyncHttpClient client = new DefaultAsyncHttpClient();
+        client.prepare("GET", "https://currency26.p.rapidapi.com/convert/" + currencyFrom + "/" + currencyTo + "/" + price)
+                .setHeader("x-rapidapi-key", "b3df9d2e25msh9fba6529f904711p1ec1dajsn1098cd943046")
+                .setHeader("x-rapidapi-host", "currency26.p.rapidapi.com")
+                .execute()
+                .toCompletableFuture()
+                .thenAccept(response -> {
+                    if(response.getStatusCode() == 200) {
+                        // Processing of string
+                        String[] processing = response.getResponseBody().split(",");
+                        String newPrice;
+                        if (processing[0].contains("vl")) {newPrice = processing[0];} else {newPrice = processing[1];}
+                        newPrice = newPrice.split(":")[1];
+                        System.out.println(price + currencyFrom + " = " + newPrice + currencyTo);
+                        exhibitionMetadata.setPriceInUsd(Double.parseDouble(newPrice));
+                    }
+                })
+                .join();
+
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         return Response.status(Response.Status.OK).entity(exhibitionMetadata).build();
     }
