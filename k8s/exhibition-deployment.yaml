@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         # Izbrati moras zadnji tag
-        - image: rsogalerija/exhibition:1.0.0-SNAPSHOT-6.1
+        - image: rsogalerija/exhibition:1.0.0-SNAPSHOT-7.1
           name: exhibition
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
@@ -36,12 +36,12 @@ spec:
               port: server
             initialDelaySeconds: 20
             periodSeconds: 3
-            readinessProbe:
-              httpGet:
-                path: /health/ready
-                port: server
-              initialDelaySeconds: 20
-              periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: server
+            initialDelaySeconds: 20
+            periodSeconds: 3
 
 
 ---
