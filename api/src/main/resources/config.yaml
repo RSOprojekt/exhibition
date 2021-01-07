@@ -14,9 +14,9 @@ kumuluzee:
       password: postgres
   health:
     checks:
-      data-source-health-check:
-        type: liveness
-        jndi-name: jdbc/ExhibitionMetadataDS
+      #data-source-health-check:
+      #  type: liveness
+      #  jndi-name: jdbc/ExhibitionMetadataDS
       disk-space-health-check:
         threshold: 10000000
   metrics:
