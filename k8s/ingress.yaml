@@ -15,6 +15,14 @@ spec:
             backend:
               serviceName: exhibition
               servicePort: 8080
+          - path: /image-handling(/|$)(.*)
+            backend:
+              serviceName: image-handling
+              servicePort: 8080
+          - path: /etcd(/|$)(.*)
+            backend:
+              serviceName: etcd
+              servicePort: 2379
 #          - path: /emotion(/|$)(.*)
 #            backend:
 #              serviceName: emotion

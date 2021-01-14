@@ -1,3 +1,4 @@
+# --volume=/tmp/etcd-data:/etcd-data quay.io/coreos/etcd:latest /usr/local/bin/etcd --name my-etcd-1 --data-dir /etcd-data --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379 --listen-peer-urls http://0.0.0.0:2380 --initial-advertise-peer-urls http://0.0.0.0:2380 --initial-cluster my-etcd-1=http://0.0.0.0:2380 --initial-cluster-token my-etcd-token --initial-cluster-state new --auto-compaction-retention 1 -cors="*"
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,36 +14,49 @@ spec:
         app: etcd
     spec:
       containers:
-      - command:
-        - /usr/local/bin/etcd
-        - --name
-        - etcd0
-        - --initial-advertise-peer-urls
-        - http://etcd:2380
-        - --listen-peer-urls
-        - http://0.0.0.0:2380
-        - --listen-client-urls
-        - http://0.0.0.0:2379
-        - --advertise-client-urls
-        - http://etcd:2379
-        - --initial-cluster-state
-        - new
-        - -cors
-        - "*"
-        - --data-dir
-        - /etcd-data
-        image: quay.io/coreos/etcd:latest
-        name: etcd
-        ports:
-        - containerPort: 2379
-          name: client
-          protocol: TCP
-        volumeMounts:
-          - mountPath: /etcd-data
-            name: etcddata
-      volumes:
-        - name: etcddata
-          emptyDir: {}
+        - image: quay.io/coreos/etcd:latest # bitnami/etcd:latest
+          name: etcd
+          env:
+            # - name: ALLOW_NONE_AUTHENTICATION
+            #   value: "yes"
+
+            - name: ETCD_NAME
+              value: "webflix-etcd"
+            - name: ETCD_LISTEN_CLIENT_URLS
+              value: "http://0.0.0.0:2379"
+            - name: ETCD_ADVERTISE_CLIENT_URLS
+              value: "http://0.0.0.0:2379"
+            - name: ETCD_LISTEN_PEER_URLS
+              value: "http://0.0.0.0:2380"
+            - name: ETCD_INITIAL_ADVERTISE_PEER_URLS
+              value: "http://0.0.0.0:2380"
+            - name: ETCD_INITIAL_CLUSTER
+              value: "webflix-etcd=http://0.0.0.0:2380"
+            - name: ETCD_INITIAL_CLUSTER_TOKEN
+              value: "webflix-etcd-token"
+            - name: ETCD_INITIAL_STATE
+              value: "new"
+            - name: ETCD_AUTO_COMPACTION_RETENTION
+              value: "1"
+            - name: ETCD_CORS
+              value: "*"
+          ports:
+            - containerPort: 2379
+              name: server
+              protocol: TCP
+            - containerPort: 2380
+              name: peer
+              protocol: TCP
+          args:
+          # - "--listen-client-urls http://localhost:2379"
+          # - "--advertise-client-urls http://0.0.0.0:2379"
+          # - "--listen-peer-urls http://0.0.0.0:2380"
+          # - "--initial-advertise-peer-urls http://0.0.0.0:2380"
+          # - "--initial-cluster my-etcd-1=http://0.0.0.0:2380"
+          # - "--initial-cluster-token my-etcd-token"
+          # - "--initial-cluster-state new"
+          # - "--auto-compaction-retention 1"
+          # - "-cors=\"*\""
 
 ---
 
@@ -51,11 +65,15 @@ kind: Service
 metadata:
   name: etcd
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
-  - name: client
-    port: 2379
-    protocol: TCP
-    targetPort: 2379
+    - port: 2379
+      protocol: TCP
+      targetPort: server
+      name: port2379
+    - port: 2380
+      protocol: TCP
+      targetPort: peer
+      name: port2380
   selector:
     app: etcd
